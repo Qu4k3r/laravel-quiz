@@ -1,0 +1,57 @@
+version: '3.8'
+
+#Docker services
+services:
+  db:
+    container_name: quiz_db
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5557:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./.containers/postgres:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=db
+      - PGDATA=/var/lib/postgresql/data/db-files/
+    networks:
+      - application
+
+  app:
+    container_name: quiz
+    build:
+      context: .
+    networks:
+      - application
+    ports:
+      - "9000:9000"
+      - "5173:5173"
+    volumes:
+      - ./src:/var/www
+    depends_on:
+      - db
+
+  nginx:
+    container_name: nginx
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "9997:80"
+    volumes:
+      - ./src/:/var/www
+      - ./.docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - application
+    depends_on:
+      - app
+
+networks:
+  application:
+    name: application
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
