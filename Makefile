@@ -5,8 +5,11 @@
 build-and-serve:
 	@docker-compose up --build  --remove-orphans
 
-serve:
-	@docker-compose up
+up:
+	@docker-compose up -d
+
+down:
+	@docker-compose down
 
 shell:
 	@docker-compose exec app sh
