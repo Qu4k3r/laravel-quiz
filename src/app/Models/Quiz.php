@@ -17,7 +17,23 @@ class Quiz extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
+        'theme_id',
+        'score',
+        'questions_count',
+        'started_at',
+        'finished_at',
     ];
 
     public $timestamps = false;
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function theme(): BelongsTo
+    {
+        return $this->belongsTo(Theme::class);
+    }
 }

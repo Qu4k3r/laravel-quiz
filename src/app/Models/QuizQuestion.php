@@ -17,7 +17,20 @@ class QuizQuestion extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'quiz_id',
+        'question_id',
+        'answer_id',
     ];
 
     public $timestamps = false;
+
+    public function quiz(): BelongsTo
+    {
+        return $this->belongsTo(Quiz::class);
+    }
+
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(Question::class);
+    }
 }

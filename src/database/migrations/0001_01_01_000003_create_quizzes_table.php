@@ -37,6 +37,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->index();
             $table->foreignUuid('theme_id');
+            $table->tinyInteger('questions_count');
             $table->tinyInteger('score')->nullable();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('completed_at')->nullable();
