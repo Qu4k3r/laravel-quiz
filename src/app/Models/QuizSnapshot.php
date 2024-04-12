@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class QuizQuestion extends Model
+class QuizSnapshot extends Model
 {
     use HasFactory, HasUuids;
 
@@ -17,9 +17,8 @@ class QuizQuestion extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'quiz_id',
-        'question_id',
-        'answer_id',
+        'quizz_id',
+        'answers',
     ];
 
     public $timestamps = false;
@@ -27,10 +26,5 @@ class QuizQuestion extends Model
     public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class);
-    }
-
-    public function question(): BelongsTo
-    {
-        return $this->belongsTo(Question::class);
     }
 }
