@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::unprepared('DROP FUNCTION IF EXISTS no_updates()');
         DB::unprepared('DROP TRIGGER IF EXISTS trigger_no_updates ON quizzes_snapshots');
+        DB::unprepared('DROP FUNCTION IF EXISTS no_updates()');
     }
 };
