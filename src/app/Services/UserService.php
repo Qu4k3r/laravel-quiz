@@ -17,5 +17,6 @@ class UserService
         ]);
 
         event(new Registered($user));
+        return $user;
     }
 }

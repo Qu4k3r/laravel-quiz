@@ -9,7 +9,7 @@ use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Inertia\Response;
+use Inertia\Response as InertiaResponse;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create(): InertiaResponse
     {
         return Inertia::render('Auth/Register');
     }
@@ -28,14 +28,18 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(UserRequest $request): RedirectResponse
     {
-        $userDto = UserDto::createFromRequest($request);
-        $user = $this->userService->create($userDto);
-        Auth::login($user);
+        try {
+            $userDto = UserDto::createFromRequest($request);
+            $user = $this->userService->create($userDto);
+            Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+            return to_route('Dashboard', ['user' => $user]);
+        } catch (\Exception $e) {
+//            return Inertia::render('Auth/Register', ['errors' => ['general' => $e->getMessage()]]);
+            return redirect('register')->withErrors(['general' => $e->getMessage()])->withInput();
+        }
     }
 }
