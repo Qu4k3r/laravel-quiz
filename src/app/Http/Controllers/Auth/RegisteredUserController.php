@@ -36,9 +36,8 @@ class RegisteredUserController extends Controller
             $user = $this->userService->create($userDto);
             Auth::login($user);
 
-            return to_route('Dashboard', ['user' => $user]);
+            return to_route('dashboard');
         } catch (\Exception $e) {
-//            return Inertia::render('Auth/Register', ['errors' => ['general' => $e->getMessage()]]);
             return redirect('register')->withErrors(['general' => $e->getMessage()])->withInput();
         }
     }
